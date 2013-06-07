@@ -1,12 +1,25 @@
 //
 // .SqlPlan visualizer
+// Copyright (c) 2013, Chris Sammis
+// All contents released under the MIT license, http://opensource.org/licenses/MIT
 //
-//
-//
-//
+
+function processStatement(node)
+{
+}
 
 function processXml(xml)
 {
+    var stmtsNode = xml.getElementsByTagName("Statements");
+    if (stmtsNode)
+    {
+        var statementNodes = stmtsNode[0].childNodes;
+        for (var i = 0; i < statementNodes.length; i++)
+        {
+            var statement = statementNodes[i];
+            if (statement.nodeType == Node.TEXT_NODE) continue;
+        }
+    }
 }
 
 function uploadFile()
