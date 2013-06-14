@@ -2,3 +2,23 @@
 {
     margin-bottom:0.5em;
 }
+
+.StatementText
+{
+    font-family:monospace;
+}
+
+.RelOp
+{
+    margin-left:0.5em;
+}
+
+.LogicalOp
+{
+    font-weight:bold;
+}
+
+.EstTotalSubtreeCost
+{
+    font-family:monospace;
+}

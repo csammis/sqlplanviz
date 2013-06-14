@@ -7,14 +7,14 @@
 function processStatement(node)
 {
     var plan = document.getElementById("plan");
-    plan.innerHTML += "<span>" + node.getAttribute("StatementText") + "</span><br />";
+    plan.innerHTML += "<span class=\"StatementText\">" + node.getAttribute("StatementText") + "</span><br />";
 
     var relopNodes = node.getElementsByTagName("RelOp");
     for (var i = 0; i < relopNodes.length; i++)
     {
         var node = relopNodes[i];
-        plan.innerHTML += "<span>Operation: " + node.getAttribute("LogicalOp") 
-            + " costing " + node.getAttribute("EstimatedTotalSubtreeCost") + "</span><br />";
+        plan.innerHTML += "<span class=\"RelOp\">Operation: <span class=\"LogicalOp\">" + node.getAttribute("LogicalOp") 
+            + "</span> costing <span class=\"EstTotalSubtreeCost\">" + node.getAttribute("EstimatedTotalSubtreeCost") + "</span></span><br />";
     }
 }
 
