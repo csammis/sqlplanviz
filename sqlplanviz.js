@@ -6,6 +6,16 @@
 
 function processStatement(node)
 {
+    var plan = document.getElementById("plan");
+    plan.innerHTML += "<span>" + node.getAttribute("StatementText") + "</span><br />";
+
+    var relopNodes = node.getElementsByTagName("RelOp");
+    for (var i = 0; i < relopNodes.length; i++)
+    {
+        var node = relopNodes[i];
+        plan.innerHTML += "<span>Operation: " + node.getAttribute("LogicalOp") 
+            + " costing " + node.getAttribute("EstimatedTotalSubtreeCost") + "</span><br />";
+    }
 }
 
 function processXml(xml)
@@ -18,6 +28,7 @@ function processXml(xml)
         {
             var statement = statementNodes[i];
             if (statement.nodeType == Node.TEXT_NODE) continue;
+            processStatement(statement);
         }
     }
 }
