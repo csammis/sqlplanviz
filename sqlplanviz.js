@@ -6,7 +6,6 @@
 
 function processStatement(node)
 {
-    var plan = document.getElementById("plan");
     $("#plan").append('<div class="StatementText">' + node.getAttribute("StatementText") + "</div>");
 
     var relopNodes = node.getElementsByTagName("RelOp");
