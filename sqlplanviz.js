@@ -20,8 +20,10 @@ function processStatement(node)
     }
 }
 
-function processXml(xml)
+function processXml(xmlString)
 {
+    var xml = $.parseXML(xmlString);
+
     var stmtsNode = xml.getElementsByTagName("Statements");
     if (stmtsNode)
     {
@@ -43,9 +45,7 @@ function uploadFile()
     var reader = new FileReader();
     reader.onload = (function (e)
     {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(e.target.result, "text/xml");
-        processXml(doc);
+        processXml(e.target.result);
     });
     reader.readAsText(filePicker.files[0]);
 }
