@@ -6,24 +6,25 @@
 
 function processStatement(node)
 {
-    $("#plan").append('<div class="StatementText">' + node.getAttribute("StatementText") + "</div>");
+    var $node = $(node);
 
-    var relopNodes = node.getElementsByTagName("RelOp");
-    for (var i = 0; i < relopNodes.length; i++)
-    {
-        var node = relopNodes[i];
-        var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
-            node.getAttribute("LogicalOp") + '</span> costing <span class="EstTotalSubtreeCost">' +
-            node.getAttribute("EstimatedTotalSubtreeCost") + "</span></div>";
+    $("#plan").append('<div class="StatementText">' + $node.attr("StatementText") + "</div>");
 
-        $("#plan").append(html);
-    }
+    $node.find("RelOp").each(
+        function (index, relop)
+        {
+            var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
+                relop.getAttribute("LogicalOp") + '</span> costing <span class="EstTotalSubtreeCost">' +
+                relop.getAttribute("EstimatedTotalSubtreeCost") + "</span></div>";
+            $("#plan").append(html);
+        }
+    );
 }
 
 function processXml(xmlString)
 {
-    var xml = $.parseXML(xmlString);
-    $xml = $(xml);
+    var  xml = $.parseXML(xmlString);
+    var $xml = $(xml);
 
     $xml.find("Statements > StmtSimple").each(
         function (index, statement)
