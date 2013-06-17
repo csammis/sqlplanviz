@@ -23,18 +23,14 @@ function processStatement(node)
 function processXml(xmlString)
 {
     var xml = $.parseXML(xmlString);
+    $xml = $(xml);
 
-    var stmtsNode = xml.getElementsByTagName("Statements");
-    if (stmtsNode)
-    {
-        var statementNodes = stmtsNode[0].childNodes;
-        for (var i = 0; i < statementNodes.length; i++)
+    $xml.find("Statements > StmtSimple").each(
+        function (index, statement)
         {
-            var statement = statementNodes[i];
-            if (statement.nodeType == Node.TEXT_NODE) continue;
             processStatement(statement);
         }
-    }
+    );
 }
 
 function uploadFile()
