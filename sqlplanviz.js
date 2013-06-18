@@ -10,15 +10,26 @@ function processStatement(node)
 
     $("#plan").append('<div class="StatementText">' + $node.attr("StatementText") + "</div>");
 
-    $node.find("RelOp").each(
-        function (index, relop)
+    // .find returns descendants at all levels but we're only interested in the first under StmtSimple
+    $node.find("RelOp").first().each(function (index, relop) { processRelOp(relop); });
+}
+
+function processRelOp(relop)
+{
+    var $relop = $(relop);
+    var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
+        $relop.attr("LogicalOp") + '</span> ';
+    
+    
+    $relop.children("IndexScan").children("Object").each(
+        function (index, object)
         {
-            var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
-                relop.getAttribute("LogicalOp") + '</span> costing <span class="EstTotalSubtreeCost">' +
-                relop.getAttribute("EstimatedTotalSubtreeCost") + "</span></div>";
-            $("#plan").append(html);
+            html += 'on <span class="IndexObject">' + object.getAttribute("Index") + '</span> '; 
         }
     );
+    html += 'costing <span class="EstTotalSubtreeCost">' + $relop.attr("EstimatedTotalSubtreeCost") + "</span></div>";
+
+    $("#plan").append(html);
 }
 
 function processXml(xmlString)
