@@ -21,11 +21,20 @@ function processStatement(node)
 function processRelOp(relop)
 {
     var $relop = $(relop);
-    var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
-        $relop.attr("LogicalOp") + "</span> ";
-    
-    var nestedHtml = "";
     var physOp = $relop.attr("PhysicalOp");
+
+    // Build a <div> to represent the RelOp
+    var html = '<div class="RelOp">';
+    
+    // Build logical operation details
+    html += 'Operation: <span class="LogicalOp">' + $relop.attr("LogicalOp");
+    if (physOp == "Top")
+    {
+        $relop.find("Top > TopExpression > ScalarOperator > Const").first().each(
+                function (index, constNode) { html += " " + constNode.getAttribute("ConstValue"); });
+    }
+    html += "</span> ";
+
     if (hasIndexInformation(physOp))
     {
         // Retrieve information about the index on which the index is scanning
@@ -36,7 +45,8 @@ function processRelOp(relop)
             }
         );
     }
-    
+   
+    var nestedHtml = "";
     if (hasNestedRelOps(physOp))
     {
         $relop.find("RelOp").each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
