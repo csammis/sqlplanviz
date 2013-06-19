@@ -24,7 +24,7 @@ function processRelOp(relop)
     var physOp = $relop.attr("PhysicalOp");
 
     // Build a <div> to represent the RelOp
-    var html = '<div class="RelOp">';
+    var html = '<div class="RelOp">\u21B3 ';
     
     // Build logical operation details
     html += 'Operation: <span class="LogicalOp">' + $relop.attr("LogicalOp");
