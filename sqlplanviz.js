@@ -22,7 +22,7 @@ function processRelOp(relop)
 {
     var $relop = $(relop);
     var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
-        $relop.attr("LogicalOp") + '</span> ';
+        $relop.attr("LogicalOp") + "</span> ";
     
     var physOp = $relop.attr("PhysicalOp");
 
@@ -32,7 +32,7 @@ function processRelOp(relop)
         $relop.children("IndexScan").children("Object").each(
             function (index, object)
             {
-                html += 'on <span class="IndexObject">' + object.getAttribute("Index") + '</span> '; 
+                html += 'on <span class="IndexObject">' + object.getAttribute("Index") + "</span> "; 
             }
         );
     }
