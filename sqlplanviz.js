@@ -36,7 +36,8 @@ function processRelOp(relop)
             }
         );
     }
-    else if (hasNestedRelOps(physOp))
+    
+    if (hasNestedRelOps(physOp))
     {
         $relop.find("RelOp").each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
     }
@@ -54,7 +55,7 @@ function hasIndexInformation(physOp)
 
 function hasNestedRelOps(physOp)
 {
-    return physOp.indexOf("Nested Loop") != -1;
+    return physOp.indexOf("Nested Loop") != -1 || physOp == "Top";
 }
 
 function processXml(xmlString)
