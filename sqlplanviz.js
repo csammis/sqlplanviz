@@ -24,8 +24,8 @@ function processRelOp(relop)
     var html = '<div class="RelOp">Operation: <span class="LogicalOp">' +
         $relop.attr("LogicalOp") + "</span> ";
     
+    var nestedHtml = "";
     var physOp = $relop.attr("PhysicalOp");
-
     if (hasIndexInformation(physOp))
     {
         // Retrieve information about the index on which the index is scanning
@@ -38,10 +38,11 @@ function processRelOp(relop)
     }
     else if (hasNestedRelOps(physOp))
     {
-        $relop.find("RelOp").each(function (index, nestedRelOp) { html += processRelOp(nestedRelOp); });
+        $relop.find("RelOp").each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
     }
 
-    html += 'costing <span class="EstTotalSubtreeCost">' + $relop.attr("EstimatedTotalSubtreeCost") + "</span></div>";
+    html += 'costing <span class="EstTotalSubtreeCost">' +
+        $relop.attr("EstimatedTotalSubtreeCost") + "</span>" + nestedHtml + "</div>";
 
     return html;
 }
