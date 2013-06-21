@@ -57,7 +57,7 @@ function getRelOpDetails($relop, indention)
         $relop.find("ColumnReference").first().each(
             function (index, sortNode)
             {
-                html += 'on <span class="ColumnReference">' + getReferencedColumn(sortNode) + "</span> ";
+                html += 'on <span class="ColumnReference">' + getReferences(sortNode, "Column") + "</span> ";
             }
         );
     }
@@ -68,7 +68,7 @@ function getRelOpDetails($relop, indention)
         $relop.children("IndexScan").children("Object").each(
             function (index, objectNode)
             {
-                html += 'on <span class="IndexObject">' + getReferencedIndex(objectNode) + "</span> "; 
+                html += 'on <span class="IndexObject">' + getReferences(objectNode, "Index") + "</span> "; 
             }
         );
     }
@@ -77,14 +77,10 @@ function getRelOpDetails($relop, indention)
     return html;
 }
 
-function getReferencedColumn(node)
+function getReferences(node, objectName)
 {
-    return node.getAttribute("Table").replace(REGEXP_COLS, "$1") + "." + node.getAttribute("Column");
-}
-
-function getReferencedIndex(node)
-{
-    return node.getAttribute("Table").replace(REGEXP_COLS, "$1") + "." + node.getAttribute("Index").replace(REGEXP_COLS, "$1");
+    return node.getAttribute("Table").replace(REGEXP_COLS, "$1") + "." +
+        node.getAttribute(objectName).replace(REGEXP_COLS, "$1");
 }
 
 function hasIndexInformation(physOp)
