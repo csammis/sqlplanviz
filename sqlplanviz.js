@@ -92,14 +92,6 @@ function hasIndexInformation(physOp)
     return physOp.indexOf("Index Scan") != -1 || physOp.indexOf("Index Seek") != -1;
 }
 
-function processXml(xmlString)
-{
-    var  xml = $.parseXML(xmlString);
-    var $xml = $(xml);
-
-    $xml.find("Statements > StmtSimple").each(function (index, statement) { processStatement(statement); });
-}
-
 function uploadFile()
 {
     var filePicker = document.getElementById("filepicker");
@@ -108,7 +100,9 @@ function uploadFile()
     var reader = new FileReader();
     reader.onload = (function (e)
     {
-        processXml(e.target.result);
+        var xml = $.parseXML(e.target.result);
+        var $xml = $(xml);
+        $xml.find("Statements > StmtSimple").each(function (index, statement) { processStatement(statement); });
     });
     reader.readAsText(filePicker.files[0]);
 }
