@@ -47,7 +47,12 @@ function processRelOp(relop)
     }
    
     var nestedHtml = "";
-    if (hasNestedRelOps(physOp))
+    if (physOp == "Compute Scalar")
+    {
+        // Process the first RelOp under the Compute Scalar
+        $relop.find("RelOp").first().each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
+    }
+    else if (hasNestedRelOps(physOp))
     {
         $relop.find("RelOp").each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
     }
