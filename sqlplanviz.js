@@ -20,11 +20,11 @@ function processStatement(node)
 
 function debug__printNode(node)
 {
-    var log = "Node: ";
+    var log = "QueryPlan";
     var depth = 0;
     while (node.parentNode != undefined && node.nodeName != "QueryPlan")
     {
-        log += node.nodeName + " > ";
+        log = log + " > " + node.nodeName;
         depth++;
         node = node.parentNode;
     }
