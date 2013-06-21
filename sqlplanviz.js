@@ -18,8 +18,23 @@ function processStatement(node)
     $("#plan").append(html);
 }
 
+function debug__printNode(node)
+{
+    var log = "Node: ";
+    var depth = 0;
+    while (node.parentNode != undefined && node.nodeName != "QueryPlan")
+    {
+        log += node.nodeName + " > ";
+        depth++;
+        node = node.parentNode;
+    }
+    console.log("At " + depth + " exists " + log);
+}
+
 function processRelOp(relop)
 {
+    debug__printNode(relop);
+
     var $relop = $(relop);
     var physOp = $relop.attr("PhysicalOp");
 
