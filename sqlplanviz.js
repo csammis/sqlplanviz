@@ -50,19 +50,40 @@ function getRelOpDetails($relop, indention)
     }
     html += "</span> ";
 
+    // **** SORT
+    if (physOp == "Sort")
+    {
+        $relop.find("ColumnReference").first().each(
+            function (index, sortNode)
+            {
+                html += 'on <span class="ColumnReference">' + getReferencedColumn(sortNode) + "</span> ";
+            }
+        );
+    }
+
     // **** INDEX SEEK/SCAN
     if (hasIndexInformation(physOp))
     {
         $relop.children("IndexScan").children("Object").each(
-            function (index, object)
+            function (index, objectNode)
             {
-                html += 'on <span class="IndexObject">' + object.getAttribute("Index") + "</span> "; 
+                html += 'on <span class="IndexObject">' + getReferencedIndex(objectNode) + "</span> "; 
             }
         );
     }
    
     html += 'costing <span class="EstTotalSubtreeCost">' + $relop.attr("EstimatedTotalSubtreeCost") + "</span></div>";
     return html;
+}
+
+function getReferencedColumn(node)
+{
+    return node.getAttribute("Alias").replace(/\[(.+?)\]/, "$1") + "." + node.getAttribute("Column");
+}
+
+function getReferencedIndex(node)
+{
+    return node.getAttribute("Index").replace(/\[(.+?)\]/, "$1");
 }
 
 function hasIndexInformation(physOp)
