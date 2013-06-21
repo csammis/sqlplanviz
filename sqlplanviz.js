@@ -4,18 +4,33 @@
 // All contents released under the MIT license, http://opensource.org/licenses/MIT
 //
 
+var INDENT_DIFF = 0.5;
+
 function processStatement(node)
 {
     var $node = $(node);
 
     $("#plan").append('<div class="StatementText">' + $node.attr("StatementText") + "</div>");
 
-    var html = "";
+    var lastDepth = 0;
+    var lastDepthEm = 0;
+    $node.find("RelOp").each(function (index, relop)
+    {
+        var $relop = $(relop);
+        var depth = $relop.parents().length;
 
-    // .find returns descendants at all levels but we're only interested in the first under StmtSimple
-    $node.find("RelOp").first().each(function (index, relop) { html += processRelOp(relop); });
+        if (depth < lastDepth)
+        {
+            lastDepthEm -= INDENT_DIFF;
+        }
+        else if (depth > lastDepth)
+        {
+            lastDepthEm += INDENT_DIFF;
+        }
+        lastDepth = depth;
 
-    $("#plan").append(html);
+        $("#plan").append(getRelOpDetails($relop, lastDepthEm)); 
+    });
 }
 
 function debug__printNode(node)
@@ -31,15 +46,12 @@ function debug__printNode(node)
     console.log("At " + depth + " exists " + log);
 }
 
-function processRelOp(relop)
+function getRelOpDetails($relop, indention)
 {
-    debug__printNode(relop);
-
-    var $relop = $(relop);
     var physOp = $relop.attr("PhysicalOp");
 
     // Build a <div> to represent the RelOp
-    var html = '<div class="RelOp">\u21B3 ';
+    var html = '<div class="RelOp" style="margin-left:' + indention + 'em;">\u21B3 ';
     
     // Build logical operation details
     html += 'Operation: <span class="LogicalOp">' + $relop.attr("LogicalOp");
@@ -61,19 +73,7 @@ function processRelOp(relop)
         );
     }
    
-    var nestedHtml = "";
-    if (physOp == "Compute Scalar")
-    {
-        // Process the first RelOp under the Compute Scalar
-        $relop.find("RelOp").first().each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
-    }
-    else if (hasNestedRelOps(physOp))
-    {
-        $relop.find("RelOp").each(function (index, nestedRelOp) { nestedHtml += processRelOp(nestedRelOp); });
-    }
-
-    html += 'costing <span class="EstTotalSubtreeCost">' +
-        $relop.attr("EstimatedTotalSubtreeCost") + "</span>" + nestedHtml + "</div>";
+    html += 'costing <span class="EstTotalSubtreeCost">' + $relop.attr("EstimatedTotalSubtreeCost") + "</span></div>";
 
     return html;
 }
@@ -81,11 +81,6 @@ function processRelOp(relop)
 function hasIndexInformation(physOp)
 {
     return physOp.indexOf("Index Scan") != -1 || physOp.indexOf("Index Seek") != -1;
-}
-
-function hasNestedRelOps(physOp)
-{
-    return physOp.indexOf("Nested Loop") != -1 || physOp == "Top";
 }
 
 function processXml(xmlString)
