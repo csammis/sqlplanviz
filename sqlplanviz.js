@@ -5,6 +5,7 @@
 //
 
 var INDENT_DIFF = 0.5;
+var REGEXP_COLS = /\[(.+?)\]/;
 
 function processStatement(node)
 {
@@ -78,12 +79,12 @@ function getRelOpDetails($relop, indention)
 
 function getReferencedColumn(node)
 {
-    return node.getAttribute("Alias").replace(/\[(.+?)\]/, "$1") + "." + node.getAttribute("Column");
+    return node.getAttribute("Table").replace(REGEXP_COLS, "$1") + "." + node.getAttribute("Column");
 }
 
 function getReferencedIndex(node)
 {
-    return node.getAttribute("Index").replace(/\[(.+?)\]/, "$1");
+    return node.getAttribute("Table").replace(REGEXP_COLS, "$1") + "." + node.getAttribute("Index").replace(REGEXP_COLS, "$1");
 }
 
 function hasIndexInformation(physOp)
