@@ -41,7 +41,7 @@ function getRelOpDetails($relop, indention)
     var physOp = $relop.attr("PhysicalOp");
 
     var html = '<div class="RelOp" style="margin-left:' + indention + 'em;">\u21B3 ';
-    html += 'Operation: <span class="LogicalOp">' + $relop.attr("LogicalOp");
+    html += '<span class="LogicalOp">' + $relop.attr("LogicalOp");
     
     // **** TOP
     if (physOp == "Top")
