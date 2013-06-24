@@ -7,6 +7,8 @@
 var INDENT_DIFF = 0.5;
 var REGEXP_COLS = /\[(.+?)\]/;
 
+var statementCost = 0.0;
+
 function processStatement(node)
 {
     var $node = $(node);
@@ -14,6 +16,8 @@ function processStatement(node)
     $("#plan")
         .empty()
         .append('<div class="StatementText">' + $node.attr("StatementText") + "</div>");
+
+    statementCost = $node.attr("StatementSubTreeCost");
 
     var lastDepth = 0;
     var lastDepthEm = 0;
@@ -72,8 +76,11 @@ function getRelOpDetails($relop, indention)
             }
         );
     }
+
+    var subtreeCost = $relop.attr("EstimatedTotalSubtreeCost");
+    var normSubtreeCost = Math.round(1000 * (subtreeCost / statementCost)) / 10.0;
    
-    html += 'costing <span class="EstTotalSubtreeCost">' + $relop.attr("EstimatedTotalSubtreeCost") + "</span></div>";
+    html += 'costing <span class="EstTotalSubtreeCost">' + subtreeCost + " (" + normSubtreeCost + "%) </span></div>";
     return html;
 }
 
