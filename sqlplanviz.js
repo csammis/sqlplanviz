@@ -77,10 +77,23 @@ function getRelOpDetails($relop, indention)
         );
     }
 
-    var subtreeCost = $relop.attr("EstimatedTotalSubtreeCost");
-    var normSubtreeCost = Math.round(1000 * (subtreeCost / statementCost)) / 10.0;
-   
-    html += 'costing <span class="EstTotalSubtreeCost">' + subtreeCost + " (" + normSubtreeCost + "%) </span></div>";
+    if (hasCostInformation(physOp))
+    {
+        // An individual node's cost is its own subtree cost minus that of the operation directly under it
+        var subtreeCost = $relop.attr("EstimatedTotalSubtreeCost");
+        $relop.find("RelOp").first().each(function (idx, subop)
+                { subtreeCost -= subop.getAttribute("EstimatedTotalSubtreeCost"); });
+
+        var normSubtreeCost = Math.round(1000 * (subtreeCost / statementCost)) / 10.0;
+        if (normSubtreeCost == 0)
+        {
+            subtreeCost = 0;
+        }
+       
+        html += 'costing <span class="EstTotalSubtreeCost">' + subtreeCost + " (" + normSubtreeCost + "%)";
+    }
+
+    html += "</span></div>";
     return html;
 }
 
@@ -93,6 +106,11 @@ function getReferences(node, objectName)
 function hasIndexInformation(physOp)
 {
     return physOp.indexOf("Index Scan") != -1 || physOp.indexOf("Index Seek") != -1;
+}
+
+function hasCostInformation(physOp)
+{
+    return physOp != "Nested Loops";
 }
 
 function uploadFile()
