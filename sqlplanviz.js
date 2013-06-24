@@ -41,39 +41,37 @@ function processStatement(node)
 
 function getRelOpDetails($relop, indention)
 {
+    var $relopDiv = $("<div>").addClass("RelOp").css("margin-left", indention + "em");
+    
     var physOp = $relop.attr("PhysicalOp");
-
-    var html = '<div class="RelOp" style="margin-left:' + indention + 'em;">\u21B3 ';
-    html += '<span class="LogicalOp">' + $relop.attr("LogicalOp");
+    var logop = $relop.attr("LogicalOp");
     
     // **** TOP
     if (physOp == "Top")
     {
         $relop.find("Top > TopExpression > ScalarOperator > Const").first().each(
-                function (index, constNode) { html += " " + constNode.getAttribute("ConstValue"); });
+                function (index, constNode) { logop += " " + constNode.getAttribute("ConstValue"); });
     }
-    html += "</span> ";
+    $relopDiv.append(" \u21B3 ").append($("<span>").addClass("LogicalOp").text(logop));
 
     // **** SORT
     if (physOp == "Sort")
     {
-        $relop.find("ColumnReference").first().each(
-            function (index, sortNode)
+        $relop.find("ColumnReference").first().each(function (index, sortNode)
             {
-                html += 'on <span class="ColumnReference">' + getReferences(sortNode, "Column") + "</span> ";
-            }
-        );
+                $relopDiv.append(" on ").append(
+                    $("<span>").addClass("ColumnReference").text(getReferences(sortNode, "Column")));
+            });
     }
 
     // **** INDEX SEEK/SCAN
     if (hasIndexInformation(physOp))
     {
-        $relop.children("IndexScan").children("Object").each(
-            function (index, objectNode)
+        $relop.children("IndexScan").children("Object").each(function (index, objectNode)
             {
-                html += 'on <span class="IndexObject">' + getReferences(objectNode, "Index") + "</span> "; 
-            }
-        );
+                $relopDiv.append(" on ").append(
+                    $("<span>").addClass("IndexObject").text(getReferences(objectNode, "Index")));
+            });
     }
 
     if (hasCostInformation(physOp))
@@ -88,12 +86,12 @@ function getRelOpDetails($relop, indention)
         {
             subtreeCost = 0;
         }
-       
-        html += 'costing <span class="EstTotalSubtreeCost">' + subtreeCost + " (" + normSubtreeCost + "%)";
+
+        $relopDiv.append(" costing ").append(
+            $("<span>").addClass("EstTotalSubtreeCost").text(subtreeCost + " (" + normSubtreeCost + "%)"));
     }
 
-    html += "</span></div>";
-    return html;
+    return $relopDiv;
 }
 
 function getReferences(node, objectName)
