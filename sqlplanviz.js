@@ -13,9 +13,8 @@ function processStatement(node)
 {
     var $node = $(node);
 
-    $("#plan")
-        .empty()
-        .append('<div class="StatementText">' + $node.attr("StatementText") + "</div>");
+    $("#plan").empty();
+    $("<div>").addClass("StatementText").text($node.attr("StatementText")).appendTo("#plan");
 
     statementCost = $node.attr("StatementSubTreeCost");
 
