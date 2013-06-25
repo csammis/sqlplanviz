@@ -6,7 +6,7 @@
 
 (function () {
 
-    var INDENT_DIFF = 0.5;
+    var INDENT_DIFF = 1.0;
     var REGEXP_COLS = /\[(.+?)\]/;
 
     var statementCost = 0.0;
@@ -31,13 +31,14 @@
                            (depth < lastDepth) ? -1 * INDENT_DIFF : 0;
             lastDepth = depth;
 
-            $("#plan").append(getRelOpDetails($relop, lastDepthEm)); 
+            $("#plan").append(getRelOpDetails($relop, index, lastDepthEm)); 
         });
     };
 
-    var getRelOpDetails = function($relop, indention)
+    var getRelOpDetails = function($relop, index, indention)
     {
-        var $relopDiv = $("<div>").addClass("RelOp").css("margin-left", indention + "em");
+        var $relopDiv = $("<div>").css("padding-left", (indention - INDENT_DIFF) + "em");
+        $relopDiv.addClass("RelOp").addClass("RelOp_" + index);
         
         var physOp = $relop.attr("PhysicalOp");
         var logop = $relop.attr("LogicalOp");
