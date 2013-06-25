@@ -11,11 +11,13 @@
 
 .RelOp
 {
+    border-radius:5px;
+    margin:0.1em;
 }
 
 .JoinedRelOp
 {
-    background-color:#ccc;
+    background-color:#DDFDDD;
 }
 
 .LogicalOp
