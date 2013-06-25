@@ -37,12 +37,23 @@
 
     var getRelOpDetails = function($relop, indention)
     {
-        var $relopDiv = $("<div>").css("padding-left", (indention - INDENT_DIFF) + "em");
-        $relopDiv.addClass("RelOp").addClass("RelOp" + $relop.attr("NodeId")).addClass("OpLevel" + indention);
-        $relop.parents("RelOp").first().each(function (index, ancestor) { $relopDiv.addClass("ChildOf" + ancestor.getAttribute("NodeId")); });
-        
         var physOp = $relop.attr("PhysicalOp");
         var logop = $relop.attr("LogicalOp");
+
+        // Create a <div> to represent the relop, add classes and effects
+        var $relopDiv = $("<div>").css("padding-left", (indention - INDENT_DIFF) + "em");
+        $relopDiv.addClass("RelOp").addClass("RelOp" + $relop.attr("NodeId")).addClass("OpLevel" + indention);
+        $relop.parents("RelOp").first().each(function (idx, ancestor) 
+                { $relopDiv.addClass("ChildOf" + ancestor.getAttribute("NodeId")); });
+        if (physOp == "Nested Loops")
+        {
+            $relopDiv.hover(
+                    function () { $(this).addClass("JoinedRelOp");
+                                  $(".ChildOf" + $relop.attr("NodeId")).addClass("JoinedRelOp"); },
+                    function () { $(this).removeClass("JoinedRelOp");
+                                  $(".ChildOf" + $relop.attr("NodeId")).removeClass("JoinedRelOp"); });
+
+        }
         
         // **** TOP (as part of the logical operation)
         if (physOp == "Top")
@@ -87,17 +98,6 @@
 
             $relopDiv.append(" costing ").append(
                 $("<span>").addClass("EstTotalSubtreeCost").text(subtreeCost + " (" + normSubtreeCost + "%)"));
-        }
-
-        // Highlight constituent operations on hover
-        if (physOp == "Nested Loops")
-        {
-            $relopDiv.hover(
-                    function () { $(this).addClass("JoinedRelOp");
-                                  $(".ChildOf" + $relop.attr("NodeId")).addClass("JoinedRelOp"); },
-                    function () { $(this).removeClass("JoinedRelOp");
-                                  $(".ChildOf" + $relop.attr("NodeId")).removeClass("JoinedRelOp"); });
-
         }
 
         return $relopDiv;
