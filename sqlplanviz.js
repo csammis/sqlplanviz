@@ -25,16 +25,10 @@
         $node.find("RelOp").each(function (index, relop)
         {
             var $relop = $(relop);
-            var depth = $relop.parents().length;
 
-            if (depth < lastDepth)
-            {
-                lastDepthEm -= INDENT_DIFF;
-            }
-            else if (depth > lastDepth)
-            {
-                lastDepthEm += INDENT_DIFF;
-            }
+            var depth = $relop.parents().length;
+            lastDepthEm += (depth > lastDepth) ?      INDENT_DIFF :
+                           (depth < lastDepth) ? -1 * INDENT_DIFF : 0;
             lastDepth = depth;
 
             $("#plan").append(getRelOpDetails($relop, lastDepthEm)); 
