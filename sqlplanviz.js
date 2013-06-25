@@ -43,7 +43,7 @@
         var physOp = $relop.attr("PhysicalOp");
         var logop = $relop.attr("LogicalOp");
         
-        // **** TOP
+        // **** TOP (as part of the logical operation)
         if (physOp == "Top")
         {
             $relop.find("Top > TopExpression > ScalarOperator > Const").first().each(
