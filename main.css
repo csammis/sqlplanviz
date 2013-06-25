@@ -13,6 +13,11 @@
 {
 }
 
+.JoinedRelOp
+{
+    background-color:#ccc;
+}
+
 .LogicalOp
 {
     font-weight:bold;

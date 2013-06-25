@@ -38,7 +38,7 @@
     var getRelOpDetails = function($relop, index, indention)
     {
         var $relopDiv = $("<div>").css("padding-left", (indention - INDENT_DIFF) + "em");
-        $relopDiv.addClass("RelOp").addClass("RelOp_" + index);
+        $relopDiv.addClass("RelOp").addClass("RelOp_" + index).addClass("OpLevel_" + indention);
         
         var physOp = $relop.attr("PhysicalOp");
         var logop = $relop.attr("LogicalOp");
@@ -86,6 +86,16 @@
 
             $relopDiv.append(" costing ").append(
                 $("<span>").addClass("EstTotalSubtreeCost").text(subtreeCost + " (" + normSubtreeCost + "%)"));
+        }
+
+        if (physOp == "Nested Loops")
+        {
+            $relopDiv.hover(
+                    function () { $(this).addClass("JoinedRelOp");
+                                  $(".OpLevel_" + (indention + 1)).addClass("JoinedRelOp"); },
+                    function () { $(this).removeClass("JoinedRelOp");
+                                  $(".OpLevel_" + (indention + 1)).removeClass("JoinedRelOp"); });
+
         }
 
         return $relopDiv;
