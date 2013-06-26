@@ -56,12 +56,13 @@
         }
         
         // **** TOP (as part of the logical operation)
+        var $logop = $("<span>").addClass("LogicalOp").text($relop.attr("LogicalOp"));
         if (physOp == "Top")
         {
             $relop.find("Top > TopExpression > ScalarOperator > Const").first().each(
-                    function (index, constNode) { logop += " " + constNode.getAttribute("ConstValue"); });
+                    function (index, constNode) { $logop.text($logop.text() + " " + constNode.getAttribute("ConstValue")); });
         }
-        $relopDiv.append(" \u21B3 ").append($("<span>").addClass("LogicalOp").text(logop));
+        $relopDiv.append(" \u21B3 ").append($logop);
 
         // **** SORT
         if (physOp == "Sort")
