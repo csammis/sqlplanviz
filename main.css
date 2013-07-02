@@ -10,11 +10,15 @@
     padding-bottom:0.5em;
 }
 
+.RelOps
+{
+    width:75%;
+}
+
 .RelOp
 {
     border-radius:5px;
     margin:0.1em;
-    width:75%;
 }
 
 .RelOpSpacing

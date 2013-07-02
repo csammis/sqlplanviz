@@ -20,6 +20,8 @@
 
         statementCost = $node.attr("StatementSubTreeCost");
 
+        var $relopsDiv = $("<div>").addClass("RelOps");
+
         var lastDepth = 0;
         var lastDepthEm = -1 * INDENT_DIFF;
         $node.find("RelOp").each(function (index, relop)
@@ -31,8 +33,10 @@
                            (depth < lastDepth) ? -1 * INDENT_DIFF : 0;
             lastDepth = depth;
 
-            $("#plan").append(getRelOpDetails($relop, lastDepthEm)); 
+            $relopsDiv.append(getRelOpDetails($relop, lastDepthEm)); 
         });
+        
+        $("#plan").append($relopsDiv);
     };
 
     var getRelOpDetails = function($relop, indention)
