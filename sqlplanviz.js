@@ -21,7 +21,7 @@
         statementCost = $node.attr("StatementSubTreeCost");
 
         var lastDepth = 0;
-        var lastDepthEm = 0;
+        var lastDepthEm = -1 * INDENT_DIFF;
         $node.find("RelOp").each(function (index, relop)
         {
             var $relop = $(relop);
@@ -41,7 +41,7 @@
         var logop = $relop.attr("LogicalOp");
 
         // Create a <div> to represent the relop, add classes and effects
-        var $relopDiv = $("<div>").css("padding-left", (indention - INDENT_DIFF) + "em");
+        var $relopDiv = $("<div>");
         $relopDiv.addClass("RelOp").addClass("RelOp" + $relop.attr("NodeId")).addClass("OpLevel" + indention);
         $relop.parents("RelOp").first().each(function (idx, ancestor) 
                 { $relopDiv.addClass("ChildOf" + ancestor.getAttribute("NodeId")); });
@@ -54,6 +54,14 @@
                                   $(".ChildOf" + $relop.attr("NodeId")).removeClass("JoinedRelOp"); });
 
         }
+
+        // Insert <span> to indent the operation
+        var $spacing = $("<span>").addClass("RelOpSpacing");
+        for (var i = 0; i < indention; i++)
+        {
+            $spacing.text($spacing.text() + "\u00A0");
+        }
+        $relopDiv.append($spacing);
         
         // **** TOP (as part of the logical operation)
         var $logop = $("<span>").addClass("LogicalOp").text($relop.attr("LogicalOp"));
