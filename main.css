@@ -6,7 +6,8 @@
 .StatementText
 {
     font-family:monospace;
-    margin-bottom:0.5em;
+    border-bottom:solid 2px gray;
+    padding-bottom:0.5em;
 }
 
 .RelOp
