@@ -13,6 +13,8 @@
 .RelOps
 {
     width:75%;
+    border-right:solid 2px gray;
+    min-height:20em;
 }
 
 .RelOp
