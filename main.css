@@ -3,14 +3,14 @@
     margin-bottom:0.5em;
 }
 
-.StatementText
+#StatementText
 {
     font-family:monospace;
     border-bottom:solid 2px gray;
     padding-bottom:0.5em;
 }
 
-.RelOps
+#RelOps
 {
     width:75%;
     border-right:solid 2px gray;

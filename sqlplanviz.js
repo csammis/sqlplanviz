@@ -15,15 +15,14 @@
     {
         var $node = $(node);
 
-        $("#plan").empty();
-        $("<div>").addClass("StatementText").text($node.attr("StatementText")).appendTo("#plan");
+        $("#StatementText").text($node.attr("StatementText"));
 
         statementCost = $node.attr("StatementSubTreeCost");
 
-        var $relopsDiv = $("<div>").addClass("RelOps");
-
         var lastDepth = 0;
         var lastDepthEm = -1 * INDENT_DIFF;
+
+        $("#RelOps").empty();
         $node.find("RelOp").each(function (index, relop)
         {
             var $relop = $(relop);
@@ -33,10 +32,8 @@
                            (depth < lastDepth) ? -1 * INDENT_DIFF : 0;
             lastDepth = depth;
 
-            $relopsDiv.append(getRelOpDetails($relop, lastDepthEm)); 
+            $("#RelOps").append(getRelOpDetails($relop, lastDepthEm)); 
         });
-        
-        $("#plan").append($relopsDiv);
     };
 
     var getRelOpDetails = function($relop, indention)
