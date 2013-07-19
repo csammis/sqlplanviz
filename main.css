@@ -16,16 +16,12 @@
     width:75%;
     border-right:solid 2px gray;
     min-height:20em;
-
-    background:#9c9;
 }
 
 #OpDetails
 {
     margin-left:75%;
     min-height:20em;
-
-    background:#c9c;
 }
 
 .RelOp
