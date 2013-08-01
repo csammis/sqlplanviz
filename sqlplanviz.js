@@ -46,15 +46,25 @@
         $relopDiv.addClass("RelOp").addClass("RelOp" + $relop.attr("NodeId")).addClass("OpLevel" + indention);
         $relop.parents("RelOp").first().each(function (idx, ancestor) 
                 { $relopDiv.addClass("ChildOf" + ancestor.getAttribute("NodeId")); });
-        if (physOp == "Nested Loops")
-        {
-            $relopDiv.hover(
-                    function () { $(this).addClass("JoinedRelOp");
-                                  $(".ChildOf" + $relop.attr("NodeId")).addClass("JoinedRelOp"); },
-                    function () { $(this).removeClass("JoinedRelOp");
-                                  $(".ChildOf" + $relop.attr("NodeId")).removeClass("JoinedRelOp"); });
+        
+        $relopDiv.hover(
+            function () {
+                if (physOp == "Nested Loops")
+                {
+                    $(this).addClass("JoinedRelOp");
+                    $(".ChildOf" + $relop.attr("NodeId")).addClass("JoinedRelOp");
+                }
+                $("#OpDetailName").text($relop.attr("LogicalOp"));
+            },
+            function () { 
+                if (physOp == "Nested Loops")
+                {           
+                    $(this).removeClass("JoinedRelOp");
+                    $(".ChildOf" + $relop.attr("NodeId")).removeClass("JoinedRelOp");
+                }
+                $("#OpDetailName").text("");
+            });
 
-        }
 
         // Insert <span> to indent the operation
         var $spacing = $("<span>").addClass("RelOpSpacing");
